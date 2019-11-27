@@ -49,9 +49,18 @@ module Trello
       # If we have an id, just update our fields.
       return update! if id
 
-      from_response client.put("/card/#{model_id}/customField/#{custom_field_id}/item", {
-        value: value
-      })
+      payload = {}
+
+      if option_id
+        payload[:idValue] = option_id
+      else
+        payload[:value] = value
+      end
+
+      from_response client.put(
+        "/card/#{model_id}/customField/#{custom_field_id}/item",
+        payload
+      )
     end
 
     # You can't "delete" a custom field item, you can only clear the value
